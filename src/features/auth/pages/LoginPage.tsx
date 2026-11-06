@@ -1,6 +1,7 @@
 // frontend/src/features/auth/pages/LoginPage.tsx
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router";
+import axios from "axios";
 import { authService } from "../services/authService";
 import { BaseButton } from "../../../components/bases/BaseButton";
 
@@ -31,10 +32,14 @@ export const LoginPage: React.FC = () => {
           navigate("/customer/dashboard");
         }
       }
-    } catch (error: any) {
-      setErrorMessage(
-        error.response?.data?.message || "Failed to sign in. Please try again."
-      );
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setErrorMessage(
+          error.response?.data?.message || "Failed to sign in. Please try again."
+        );
+      } else {
+        setErrorMessage("Failed to sign in. Please try again.");
+      }
     } finally {
       setLoading(false);
     }

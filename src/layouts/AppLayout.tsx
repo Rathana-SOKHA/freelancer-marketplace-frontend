@@ -1,6 +1,6 @@
 // frontend/src/layouts/AppLayout.tsx
 import React from "react";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router";
 import { authService } from "../features/auth/services/authService";
 import { BaseButton } from "../components/bases/BaseButton";
 

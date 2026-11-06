@@ -1,6 +1,7 @@
 // frontend/src/features/auth/pages/RegisterPage.tsx
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router";
+import axios from "axios";
 import { authService } from "../services/authService";
 import { RoleType } from "../../../enums/roleType";
 import { BaseButton } from "../../../components/bases/BaseButton";
@@ -33,10 +34,14 @@ export const RegisterPage: React.FC = () => {
       if (response.success) {
         navigate("/login");
       }
-    } catch (error: any) {
-      setErrorMessage(
-        error.response?.data?.message || "Registration failed. Try again."
-      );
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setErrorMessage(
+          error.response?.data?.message || "Registration failed. Try again."
+        );
+      } else {
+        setErrorMessage("Registration failed. Try again.");
+      }
     } finally {
       setLoading(false);
     }
