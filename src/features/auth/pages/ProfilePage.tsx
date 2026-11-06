@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Hash, Mail, ShieldCheck, UserRound } from "lucide-react";
 import { authService } from "../services/authService";
 import type { User } from "../types";
 
@@ -54,7 +55,7 @@ function ProfilePage() {
 
   if (loading) {
     return (
-      <div className="rounded-xl border border-gray-100 bg-white p-6 text-gray-600 shadow-sm">
+      <div className="border-2 border-black bg-white p-6 font-mono text-sm font-bold uppercase shadow-[4px_4px_0_#111]">
         Loading your profile...
       </div>
     );
@@ -64,7 +65,7 @@ function ProfilePage() {
     return (
       <div
         role="alert"
-        className="rounded-xl border border-red-200 bg-red-50 p-6 text-red-700"
+        className="border-2 border-red-700 bg-red-50 p-6 font-medium text-red-800 shadow-[4px_4px_0_#111]"
       >
         {errorMessage}
       </div>
@@ -76,40 +77,83 @@ function ProfilePage() {
   }
 
   const fullName = `${user.firstName} ${user.lastName}`.trim();
+  const initials = `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`
+    .toUpperCase();
+  const profileDetails = [
+    { label: "Full name", value: fullName || "Not provided", icon: UserRound },
+    { label: "Email address", value: user.email, icon: Mail },
+    { label: "Account type", value: role || user.role, icon: ShieldCheck },
+    { label: "Member ID", value: `#${user.id}`, icon: Hash },
+  ];
 
   return (
-    <section className="mx-auto max-w-3xl space-y-6">
-      <div className="rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
-        <h1 className="text-2xl font-bold text-gray-900">My Profile</h1>
-        <p className="mt-1 text-gray-500">Your account information.</p>
-      </div>
+    <section className="mx-auto max-w-5xl space-y-6 text-black">
+      <header className="flex flex-col justify-between gap-4 border-b-2 border-dashed border-black pb-5 sm:flex-row sm:items-end">
+        <div>
+          <h1 className="text-3xl font-black uppercase tracking-tight">
+            My Profile
+          </h1>
+          <p className="mt-2 inline-block bg-[#ffe96a] px-2 py-1 font-mono text-xs font-semibold uppercase">
+            Account information
+          </p>
+        </div>
+        <p className="text-sm font-medium text-gray-600">
+          Your identity on FreelanceHub.
+        </p>
+      </header>
 
-      <dl className="divide-y divide-gray-100 rounded-xl border border-gray-100 bg-white px-6 shadow-sm">
-        <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4">
-          <dt className="text-sm font-medium text-gray-500">Name</dt>
-          <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-            {fullName || "Not provided"}
-          </dd>
-        </div>
-        <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4">
-          <dt className="text-sm font-medium text-gray-500">Email</dt>
-          <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-            {user.email}
-          </dd>
-        </div>
-        <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4">
-          <dt className="text-sm font-medium text-gray-500">Role</dt>
-          <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+      <div className="grid gap-5 lg:grid-cols-[minmax(240px,0.8fr)_minmax(0,1.5fr)]">
+        <section className="relative flex min-h-72 flex-col items-center justify-center overflow-hidden border-2 border-black bg-[#ffe96a] p-6 text-center shadow-[4px_4px_0_#111]">
+          <div
+            aria-hidden="true"
+            className="absolute -bottom-12 -right-10 size-40 rotate-12 border-[18px] border-black/5"
+          />
+          <div className="relative flex size-28 items-center justify-center border-2 border-black bg-white font-mono text-3xl font-black shadow-[4px_4px_0_#111]">
+            {initials || "?"}
+          </div>
+          <h2 className="relative mt-5 text-xl font-black uppercase">
+            {fullName || "Your profile"}
+          </h2>
+          <span className="relative mt-2 border border-black bg-black px-2 py-1 font-mono text-[10px] font-bold uppercase tracking-wider text-white">
             {role || user.role}
-          </dd>
-        </div>
-        <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4">
-          <dt className="text-sm font-medium text-gray-500">User ID</dt>
-          <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-            {user.id}
-          </dd>
-        </div>
-      </dl>
+          </span>
+        </section>
+
+        <section className="border-2 border-black bg-white p-5 shadow-[4px_4px_0_#111] sm:p-6">
+          <div className="mb-2 flex items-center justify-between border-b-2 border-black pb-4">
+            <div>
+              <h2 className="font-black uppercase">Personal details</h2>
+              <p className="mt-1 font-mono text-xs text-gray-500">
+                Your account at a glance
+              </p>
+            </div>
+            <span className="bg-[#ffe96a] px-2 py-1 font-mono text-[10px] font-bold uppercase">
+              Profile
+            </span>
+          </div>
+
+          <dl className="divide-y divide-gray-200">
+            {profileDetails.map(({ label, value, icon: Icon }) => (
+              <div
+                key={label}
+                className="flex items-center gap-4 py-4"
+              >
+                <span className="flex size-10 shrink-0 items-center justify-center border-2 border-black bg-white">
+                  <Icon size={18} aria-hidden="true" />
+                </span>
+                <div className="min-w-0">
+                  <dt className="text-[10px] font-bold uppercase tracking-wider text-gray-500">
+                    {label}
+                  </dt>
+                  <dd className="mt-1 break-words text-sm font-bold text-black">
+                    {value}
+                  </dd>
+                </div>
+              </div>
+            ))}
+          </dl>
+        </section>
+      </div>
     </section>
   );
 }
