@@ -1,5 +1,6 @@
 // frontend/src/features/customers/pages/CustomerDashboard.tsx
 import React from "react";
+import { BaseButton } from "../../../components/bases/BaseButton";
 
 export const CustomerDashboard: React.FC = () => {
   return (
@@ -11,9 +12,9 @@ export const CustomerDashboard: React.FC = () => {
             Hire top freelancers and manage your ongoing project postings.
           </p>
         </div>
-        <button className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg text-sm">
+        <BaseButton>
           Post a New Job
-        </button>
+        </BaseButton>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

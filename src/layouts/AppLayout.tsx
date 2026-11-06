@@ -2,6 +2,7 @@
 import React from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { authService } from "../features/auth/services/authService";
+import { BaseButton } from "../components/bases/BaseButton";
 
 interface AppLayoutProps {
   role: "CLIENT" | "FREELANCER";
@@ -94,12 +95,13 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ role }) => {
 
           {/* User Controls */}
           <div className="flex items-center space-x-3">
-            <button
+            <BaseButton
+              variant="outline"
+              size="sm"
               onClick={handleLogout}
-              className="text-sm px-3.5 py-1.5 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100 transition"
             >
               Logout
-            </button>
+            </BaseButton>
           </div>
         </div>
       </header>

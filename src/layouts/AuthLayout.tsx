@@ -1,7 +1,7 @@
 // frontend/src/layouts/AuthLayout.tsx
 import React from "react";
 import { Link, Outlet } from "react-router-dom";
-import logo from "../assets/logo/logo.png";
+
 
 export const AuthLayout: React.FC = () => {
   return (

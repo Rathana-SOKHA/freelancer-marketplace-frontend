@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { authService } from "../services/authService";
 import { RoleType } from "../../../enums/roleType";
+import { BaseButton } from "../../../components/bases/BaseButton";
 
 export const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
@@ -113,13 +114,14 @@ export const RegisterPage: React.FC = () => {
         </select>
       </div>
 
-      <button
+      <BaseButton
         type="submit"
-        disabled={loading}
-        className="w-full py-2 px-4 border border-transparent rounded-md text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50"
+        loading={loading}
+        loadingText="Registering..."
+        fullWidth
       >
-        {loading ? "Registering..." : "Create Account"}
-      </button>
+        Create Account
+      </BaseButton>
 
       <p className="text-center text-sm text-gray-600">
         Already have an account?{" "}
