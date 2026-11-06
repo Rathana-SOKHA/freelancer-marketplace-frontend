@@ -4,7 +4,6 @@ import { Link, useNavigate } from "react-router";
 import axios from "axios";
 
 import { authService } from "../services/authService";
-import { BaseButton } from "../../../components/bases/BaseButton";
 
 function LoginForm() {
     const navigate = useNavigate();
@@ -72,66 +71,74 @@ function LoginForm() {
     }
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-5">
 
-            <h3 className="text-xl font-bold text-gray-800 text-center">
-                Sign in
-            </h3>
+            <div>
+                <h2 className="text-3xl font-black uppercase tracking-tight text-black">
+                    Welcome back
+                </h2>
+                <p className="mt-2 text-sm text-gray-600">
+                    Sign in to continue to your workspace.
+                </p>
+            </div>
 
             {/* Error Message */}
             {errorMessage !== "" && (
-                <div className="p-3 text-sm text-red-600 bg-red-50 rounded-md">
+                <div role="alert" className="border-2 border-red-700 bg-red-50 p-3 text-sm font-medium text-red-800">
                     {errorMessage}
                 </div>
             )}
 
             {/* Email */}
             <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label htmlFor="login-email" className="block text-xs font-bold uppercase tracking-wider text-black">
                     Email
                 </label>
 
                 <input
                     type="email"
+                    id="login-email"
                     value={email}
                     onChange={handleEmailChange}
                     required
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+                    autoComplete="email"
+                    className="mt-2 block w-full border-2 border-black bg-white px-3 py-3 text-sm outline-none transition focus:bg-[#fff9cf] focus:shadow-[3px_3px_0_#ffe96a]"
                 />
             </div>
 
             {/* Password */}
             <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label htmlFor="login-password" className="block text-xs font-bold uppercase tracking-wider text-black">
                     Password
                 </label>
 
                 <input
                     type="password"
+                    id="login-password"
                     value={password}
                     onChange={handlePasswordChange}
                     required
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+                    autoComplete="current-password"
+                    className="mt-2 block w-full border-2 border-black bg-white px-3 py-3 text-sm outline-none transition focus:bg-[#fff9cf] focus:shadow-[3px_3px_0_#ffe96a]"
                 />
             </div>
 
             {/* Login Button */}
-            <BaseButton
+            <button
                 type="submit"
-                loading={loading}
-                loadingText="Signing in..."
-                fullWidth
+                disabled={loading}
+                className="w-full border-2 border-black bg-black px-4 py-3 text-sm font-bold uppercase tracking-wider text-white shadow-[3px_3px_0_#ffe96a] transition hover:bg-[#ffe96a] hover:text-black disabled:cursor-not-allowed disabled:opacity-60"
             >
-                Sign in
-            </BaseButton>
+                {loading ? "Signing in..." : "Sign in"}
+            </button>
 
             {/* Register Link */}
-            <p className="text-center text-sm text-gray-600">
+            <p className="border-t border-gray-200 pt-4 text-center text-sm text-gray-600">
                 Don't have an account?{" "}
 
                 <Link
                     to="/register"
-                    className="font-medium text-blue-600 hover:underline"
+                    className="font-bold text-black underline decoration-2 underline-offset-4 hover:bg-[#ffe96a]"
                 >
                     Register
                 </Link>

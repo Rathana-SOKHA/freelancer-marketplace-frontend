@@ -5,7 +5,6 @@ import axios from "axios";
 
 import { authService } from "../services/authService";
 import { RoleType } from "../../../enums/roleType";
-import { BaseButton } from "../../../components/bases/BaseButton";
 
 function RegisterForm() {
     const navigate = useNavigate();
@@ -90,13 +89,18 @@ function RegisterForm() {
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
 
-            <h3 className="text-xl font-bold text-gray-800 text-center">
-                Create an Account
-            </h3>
+            <div>
+                <h2 className="text-3xl font-black uppercase tracking-tight text-black">
+                    Create account
+                </h2>
+                <p className="mt-2 text-sm text-gray-600">
+                    Join the community and get started.
+                </p>
+            </div>
 
             {/* Error Message */}
             {errorMessage !== "" && (
-                <div className="p-3 text-sm text-red-600 bg-red-50 rounded-md">
+                <div role="alert" className="border-2 border-red-700 bg-red-50 p-3 text-sm font-medium text-red-800">
                     {errorMessage}
                 </div>
             )}
@@ -106,31 +110,35 @@ function RegisterForm() {
 
                 {/* First Name */}
                 <div>
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="register-first-name" className="block text-xs font-bold uppercase tracking-wider text-black">
                         First Name
                     </label>
 
                     <input
                         type="text"
+                        id="register-first-name"
                         value={firstName}
                         onChange={handleFirstNameChange}
                         required
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+                        autoComplete="given-name"
+                        className="mt-2 block w-full border-2 border-black bg-white px-3 py-3 text-sm outline-none transition focus:bg-[#fff9cf] focus:shadow-[3px_3px_0_#ffe96a]"
                     />
                 </div>
 
                 {/* Last Name */}
                 <div>
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="register-last-name" className="block text-xs font-bold uppercase tracking-wider text-black">
                         Last Name
                     </label>
 
                     <input
                         type="text"
+                        id="register-last-name"
                         value={lastName}
                         onChange={handleLastNameChange}
                         required
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+                        autoComplete="family-name"
+                        className="mt-2 block w-full border-2 border-black bg-white px-3 py-3 text-sm outline-none transition focus:bg-[#fff9cf] focus:shadow-[3px_3px_0_#ffe96a]"
                     />
                 </div>
 
@@ -138,45 +146,50 @@ function RegisterForm() {
 
             {/* Email */}
             <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label htmlFor="register-email" className="block text-xs font-bold uppercase tracking-wider text-black">
                     Email
                 </label>
 
                 <input
                     type="email"
+                    id="register-email"
                     value={email}
                     onChange={handleEmailChange}
                     required
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+                    autoComplete="email"
+                    className="mt-2 block w-full border-2 border-black bg-white px-3 py-3 text-sm outline-none transition focus:bg-[#fff9cf] focus:shadow-[3px_3px_0_#ffe96a]"
                 />
             </div>
 
             {/* Password */}
             <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label htmlFor="register-password" className="block text-xs font-bold uppercase tracking-wider text-black">
                     Password
                 </label>
 
                 <input
                     type="password"
+                    id="register-password"
                     value={password}
                     onChange={handlePasswordChange}
                     required
                     minLength={8}
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+                    autoComplete="new-password"
+                    className="mt-2 block w-full border-2 border-black bg-white px-3 py-3 text-sm outline-none transition focus:bg-[#fff9cf] focus:shadow-[3px_3px_0_#ffe96a]"
                 />
             </div>
 
             {/* Role */}
             <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label htmlFor="register-role" className="block text-xs font-bold uppercase tracking-wider text-black">
                     I want to:
                 </label>
 
                 <select
-                    value={role}
-                    onChange={handleRoleChange}
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md bg-white"
+                id="register-role"
+                value={role}
+                onChange={handleRoleChange}
+                className="mt-2 block w-full border-2 border-black bg-white px-3 py-3 text-sm outline-none transition focus:bg-[#fff9cf] focus:shadow-[3px_3px_0_#ffe96a]"
                 >
                     <option value={RoleType.CLIENT}>
                         Hire Freelancers (Client)
@@ -189,22 +202,21 @@ function RegisterForm() {
             </div>
 
             {/* Register Button */}
-            <BaseButton
+            <button
                 type="submit"
-                loading={loading}
-                loadingText="Registering..."
-                fullWidth
+                disabled={loading}
+                className="w-full border-2 border-black bg-black px-4 py-3 text-sm font-bold uppercase tracking-wider text-white shadow-[3px_3px_0_#ffe96a] transition hover:bg-[#ffe96a] hover:text-black disabled:cursor-not-allowed disabled:opacity-60"
             >
-                Create Account
-            </BaseButton>
+                {loading ? "Registering..." : "Create account"}
+            </button>
 
             {/* Login Link */}
-            <p className="text-center text-sm text-gray-600">
+            <p className="border-t border-gray-200 pt-4 text-center text-sm text-gray-600">
                 Already have an account?{" "}
 
                 <Link
                     to="/login"
-                    className="font-medium text-blue-600 hover:underline"
+                    className="font-bold text-black underline decoration-2 underline-offset-4 hover:bg-[#ffe96a]"
                 >
                     Sign In
                 </Link>
