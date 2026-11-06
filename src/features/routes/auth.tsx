@@ -17,7 +17,7 @@ export const AuthRoutes = (
 // Customer Routes
 export const CustomerRoutes = (
   <Route path="/customer" element={<AppLayout role="CLIENT" />}>
-    <Route index element={<Navigate to="dashboard" replace />} />
+    <Route index element={<Navigate to="dashboard" />} />
     <Route path="dashboard" element={<CustomerDashboard />} />
   </Route>
 );
@@ -25,7 +25,7 @@ export const CustomerRoutes = (
 // Freelancer Routes
 export const FreelancerRoutes = (
   <Route path="/freelancer" element={<AppLayout role="FREELANCER" />}>
-    <Route index element={<Navigate to="dashboard" replace />} />
+    <Route index element={<Navigate to="dashboard" />} />
     <Route path="dashboard" element={<FreelancerDashboard />} />
   </Route>
 );

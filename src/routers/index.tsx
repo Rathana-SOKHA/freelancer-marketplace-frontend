@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router";
-import { AuthRoutes, CustomerRoutes, FreelancerRoutes } from "../features/routes";
+import { AuthRoutes, CustomerRoutes, FreelancerRoutes } from "../features/routes/auth";
 import PageNotFound  from "../components/ui/PageNotFound";
 
 function AppRouter() {
