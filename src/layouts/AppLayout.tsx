@@ -29,10 +29,10 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ role }) => {
     ? "/freelancer/profile"
     : "/customer/profile";
   const linkClassName = ({ isActive }: { isActive: boolean }) =>
-    `block rounded-lg px-3 py-2.5 text-sm font-medium transition ${
+    `block border-2 px-3 py-2.5 text-sm font-bold uppercase tracking-wide transition ${
       isActive
-        ? "bg-blue-50 text-blue-700"
-        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+        ? "border-black bg-black text-white"
+        : "border-transparent text-gray-800 hover:border-black hover:bg-white"
     }`;
 
   return (
@@ -47,30 +47,30 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ role }) => {
       )}
 
       <aside
-        className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-gray-200 bg-white transition-transform md:sticky md:top-0 md:h-screen md:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r-2 border-black bg-[#f7f7f4] transition-transform md:sticky md:top-0 md:h-screen md:translate-x-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="border-b border-gray-100 px-6 py-6">
+        <div className="border-b-2 border-black bg-[#ffe96a] px-5 py-6">
           <Link
             to={dashboardPath}
-            className="text-xl font-black tracking-tight text-blue-600"
+            className="text-xl font-black tracking-tight text-black"
             onClick={() => setSidebarOpen(false)}
           >
-            FreelanceHub
+            ◈ FreelanceHub
           </Link>
           <span
-            className={`mt-3 inline-flex rounded-full px-2.5 py-1 text-xs font-semibold uppercase ${
+            className={`mt-3 inline-flex border border-black bg-white px-2 py-1 text-[10px] font-bold uppercase tracking-wider ${
               isFreelancer
-                ? "bg-purple-100 text-purple-700"
-                : "bg-emerald-100 text-emerald-700"
+                ? "text-black"
+                : "text-black"
             }`}
           >
             {isFreelancer ? "Freelancer Mode" : "Client Mode"}
           </span>
         </div>
 
-        <nav aria-label="Main navigation" className="flex-1 space-y-1 px-3 py-5">
+        <nav aria-label="Main navigation" className="flex-1 space-y-2 px-3 py-5">
           {isFreelancer ? (
             <>
               <NavLink
@@ -124,11 +124,11 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ role }) => {
           </NavLink>
         </nav>
 
-        <div className="border-t border-gray-100 p-4">
+        <div className="border-t-2 border-black p-3">
           <button
             type="button"
             onClick={handleLogout}
-            className="w-full rounded-lg px-3 py-2.5 text-left text-sm font-medium text-gray-600 transition hover:bg-red-50 hover:text-red-700"
+            className="w-full border-2 border-black bg-white px-3 py-2.5 text-left text-sm font-bold uppercase tracking-wide text-black transition hover:bg-[#ffe96a]"
           >
             Logout
           </button>
@@ -136,12 +136,21 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ role }) => {
       </aside>
 
       <div className="min-w-0 flex-1">
-        <div className="p-4 sm:p-6 lg:p-8">
+        <div className="min-h-screen bg-[#f7f8fb]">
+          <header className="flex h-[68px] items-center justify-between border-b-2 border-black bg-white px-5 sm:px-8">
+            <span className="text-sm font-black uppercase tracking-wide text-black">
+              Workspace
+            </span>
+            <span className="hidden text-xs font-semibold uppercase tracking-widest text-gray-500 sm:block">
+              {isFreelancer ? "Freelancer" : "Client"} portal
+            </span>
+          </header>
+          <div className="p-4 sm:p-6 lg:p-8">
           <button
             type="button"
             aria-label="Open navigation menu"
             aria-expanded={sidebarOpen}
-            className="mb-4 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm md:hidden"
+            className="mb-4 border-2 border-black bg-white px-3 py-2 text-sm font-bold uppercase text-black shadow-[3px_3px_0_#111] md:hidden"
             onClick={() => setSidebarOpen(true)}
           >
             Menu
@@ -149,6 +158,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ role }) => {
           <main className="mx-auto w-full max-w-7xl">
             <Outlet />
           </main>
+          </div>
         </div>
       </div>
     </div>
