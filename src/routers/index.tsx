@@ -13,8 +13,8 @@ function AppRouter() {
 
         { CustomerRoutes }
 
-        {/* Default route */}
-        <Route path="/login" element={<Navigate to="/login" />} />
+        {/* Send the app's initial route to the sign-in page. */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>
