@@ -62,12 +62,6 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ role }) => {
                 >
                   My Proposals
                 </Link>
-                <Link
-                  to="/freelancer/profile"
-                  className="text-sm font-medium text-gray-700 hover:text-blue-600 transition"
-                >
-                  My Profile
-                </Link>
               </>
             ) : (
               <>
@@ -95,6 +89,12 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ role }) => {
 
           {/* User Controls */}
           <div className="flex items-center space-x-3">
+            <Link
+              to={isFreelancer ? "/freelancer/profile" : "/customer/profile"}
+              className="text-sm font-medium text-gray-700 hover:text-blue-600 transition"
+            >
+              My Profile
+            </Link>
             <BaseButton
               variant="outline"
               size="sm"
