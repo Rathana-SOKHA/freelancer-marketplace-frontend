@@ -1,8 +1,7 @@
 // frontend/src/layouts/AppLayout.tsx
-import React from "react";
-import { Link, Outlet, useNavigate } from "react-router";
+import React, { useState } from "react";
+import { Link, NavLink, Outlet, useNavigate } from "react-router";
 import { authService } from "../features/auth/services/authService";
-import { BaseButton } from "../components/bases/BaseButton";
 
 interface AppLayoutProps {
   role: "CLIENT" | "FREELANCER";
@@ -10,6 +9,7 @@ interface AppLayoutProps {
 
 export const AppLayout: React.FC<AppLayoutProps> = ({ role }) => {
   const navigate = useNavigate();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -22,94 +22,135 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ role }) => {
   };
 
   const isFreelancer = role === "FREELANCER";
+  const dashboardPath = isFreelancer
+    ? "/freelancer/dashboard"
+    : "/customer/dashboard";
+  const profilePath = isFreelancer
+    ? "/freelancer/profile"
+    : "/customer/profile";
+  const linkClassName = ({ isActive }: { isActive: boolean }) =>
+    `block rounded-lg px-3 py-2.5 text-sm font-medium transition ${
+      isActive
+        ? "bg-blue-50 text-blue-700"
+        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+    }`;
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
-      {/* Top Navigation Bar */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          {/* Logo & Role Badge */}
-          <div className="flex items-center space-x-4">
-            <Link to={isFreelancer ? "/freelancer/dashboard" : "/customer/dashboard"}>
-              <span className="text-xl font-black text-blue-600 tracking-tight">
-                FreelanceHub
-              </span>
-            </Link>
-            <span
-              className={`px-2.5 py-0.5 rounded-full text-xs font-semibold uppercase ${
-                isFreelancer
-                  ? "bg-purple-100 text-purple-700"
-                  : "bg-emerald-100 text-emerald-700"
-              }`}
-            >
-              {isFreelancer ? "Freelancer Mode" : "Client Mode"}
-            </span>
-          </div>
+    <div className="min-h-screen bg-gray-50 md:flex">
+      {sidebarOpen && (
+        <button
+          type="button"
+          aria-label="Close navigation menu"
+          className="fixed inset-0 z-40 bg-gray-900/40 md:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
 
-          {/* Role-Specific Navigation Menu */}
-          <nav className="hidden md:flex items-center space-x-6">
-            {isFreelancer ? (
-              <>
-                <Link
-                  to="/freelancer/dashboard"
-                  className="text-sm font-medium text-gray-700 hover:text-blue-600 transition"
-                >
-                  Browse Jobs
-                </Link>
-                <Link
-                  to="/freelancer/proposals"
-                  className="text-sm font-medium text-gray-700 hover:text-blue-600 transition"
-                >
-                  My Proposals
-                </Link>
-              </>
-            ) : (
-              <>
-                <Link
-                  to="/customer/dashboard"
-                  className="text-sm font-medium text-gray-700 hover:text-blue-600 transition"
-                >
-                  Find Freelancers
-                </Link>
-                <Link
-                  to="/customer/jobs"
-                  className="text-sm font-medium text-gray-700 hover:text-blue-600 transition"
-                >
-                  My Job Posts
-                </Link>
-                <Link
-                  to="/customer/post-job"
-                  className="text-sm font-medium text-blue-600 hover:underline"
-                >
-                  + Post a Job
-                </Link>
-              </>
-            )}
-          </nav>
-
-          {/* User Controls */}
-          <div className="flex items-center space-x-3">
-            <Link
-              to={isFreelancer ? "/freelancer/profile" : "/customer/profile"}
-              className="text-sm font-medium text-gray-700 hover:text-blue-600 transition"
-            >
-              My Profile
-            </Link>
-            <BaseButton
-              variant="outline"
-              size="sm"
-              onClick={handleLogout}
-            >
-              Logout
-            </BaseButton>
-          </div>
+      <aside
+        className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-gray-200 bg-white transition-transform md:sticky md:top-0 md:h-screen md:translate-x-0 ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <div className="border-b border-gray-100 px-6 py-6">
+          <Link
+            to={dashboardPath}
+            className="text-xl font-black tracking-tight text-blue-600"
+            onClick={() => setSidebarOpen(false)}
+          >
+            FreelanceHub
+          </Link>
+          <span
+            className={`mt-3 inline-flex rounded-full px-2.5 py-1 text-xs font-semibold uppercase ${
+              isFreelancer
+                ? "bg-purple-100 text-purple-700"
+                : "bg-emerald-100 text-emerald-700"
+            }`}
+          >
+            {isFreelancer ? "Freelancer Mode" : "Client Mode"}
+          </span>
         </div>
-      </header>
 
-      {/* Main Page Content */}
-      <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
-        <Outlet />
-      </main>
+        <nav aria-label="Main navigation" className="flex-1 space-y-1 px-3 py-5">
+          {isFreelancer ? (
+            <>
+              <NavLink
+                to="/freelancer/dashboard"
+                end
+                className={linkClassName}
+                onClick={() => setSidebarOpen(false)}
+              >
+                Browse Jobs
+              </NavLink>
+              <NavLink
+                to="/freelancer/proposals"
+                className={linkClassName}
+                onClick={() => setSidebarOpen(false)}
+              >
+                My Proposals
+              </NavLink>
+            </>
+          ) : (
+            <>
+              <NavLink
+                to="/customer/dashboard"
+                end
+                className={linkClassName}
+                onClick={() => setSidebarOpen(false)}
+              >
+                Find Freelancers
+              </NavLink>
+              <NavLink
+                to="/customer/jobs"
+                className={linkClassName}
+                onClick={() => setSidebarOpen(false)}
+              >
+                My Job Posts
+              </NavLink>
+              <NavLink
+                to="/customer/post-job"
+                className={linkClassName}
+                onClick={() => setSidebarOpen(false)}
+              >
+                + Post a Job
+              </NavLink>
+            </>
+          )}
+          <NavLink
+            to={profilePath}
+            className={linkClassName}
+            onClick={() => setSidebarOpen(false)}
+          >
+            My Profile
+          </NavLink>
+        </nav>
+
+        <div className="border-t border-gray-100 p-4">
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="w-full rounded-lg px-3 py-2.5 text-left text-sm font-medium text-gray-600 transition hover:bg-red-50 hover:text-red-700"
+          >
+            Logout
+          </button>
+        </div>
+      </aside>
+
+      <div className="min-w-0 flex-1">
+        <div className="p-4 sm:p-6 lg:p-8">
+          <button
+            type="button"
+            aria-label="Open navigation menu"
+            aria-expanded={sidebarOpen}
+            className="mb-4 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm md:hidden"
+            onClick={() => setSidebarOpen(true)}
+          >
+            Menu
+          </button>
+          <main className="mx-auto w-full max-w-7xl">
+            <Outlet />
+          </main>
+        </div>
+      </div>
     </div>
   );
 };
