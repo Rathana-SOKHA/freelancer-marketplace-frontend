@@ -5,6 +5,7 @@ import LoginPage from "../auth/pages/LoginPage";
 import RegisterPage from "../auth/pages/RegisterPage";
 import CustomerDashboard from "../customers/pages/CustomerDashboard";
 import FreelancerDashboard from "../freelancers/pages/FreelancerDashboard";
+import FreelancerProfilePage from "../freelancers/pages/FreelancerProfilePage";
 import ProfilePage from "../auth/pages/ProfilePage";
 
 // Auth Routes (Login, Register)
@@ -29,6 +30,6 @@ export const FreelancerRoutes = (
   <Route path="/freelancer" element={<AppLayout role="FREELANCER" />}>
     <Route index element={<Navigate to="dashboard" />} />
     <Route path="dashboard" element={<FreelancerDashboard />} />
-    <Route path="profile" element={<ProfilePage />} />
+    <Route path="profile" element={<FreelancerProfilePage />} />
   </Route>
 );

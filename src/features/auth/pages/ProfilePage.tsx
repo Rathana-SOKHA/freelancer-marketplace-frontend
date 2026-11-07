@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Hash, Mail, ShieldCheck, UserRound } from "lucide-react";
+import { Mail, ShieldCheck, UserRound } from "lucide-react";
 import { authService } from "../services/authService";
 import type { User } from "../types";
 
@@ -83,7 +83,6 @@ function ProfilePage() {
     { label: "Full name", value: fullName || "Not provided", icon: UserRound },
     { label: "Email address", value: user.email, icon: Mail },
     { label: "Account type", value: role || user.role, icon: ShieldCheck },
-    { label: "Member ID", value: `#${user.id}`, icon: Hash },
   ];
 
   return (
