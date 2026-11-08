@@ -3,10 +3,10 @@ import AuthLayout from "../../layouts/AuthLayout";
 import AppLayout from "../../layouts/AppLayout";
 import LoginPage from "../auth/pages/LoginPage";
 import RegisterPage from "../auth/pages/RegisterPage";
+import ClientProfilePage from "../customers/pages/ClientProfilePage";
 import CustomerDashboard from "../customers/pages/CustomerDashboard";
 import FreelancerDashboard from "../freelancers/pages/FreelancerDashboard";
 import FreelancerProfilePage from "../freelancers/pages/FreelancerProfilePage";
-import ProfilePage from "../auth/pages/ProfilePage";
 
 // Auth Routes (Login, Register)
 export const AuthRoutes = (
@@ -21,7 +21,7 @@ export const CustomerRoutes = (
   <Route path="/customer" element={<AppLayout role="CLIENT" />}>
     <Route index element={<Navigate to="dashboard" />} />
     <Route path="dashboard" element={<CustomerDashboard />} />
-    <Route path="profile" element={<ProfilePage />} />
+    <Route path="profile" element={<ClientProfilePage />} />
   </Route>
 );
 
