@@ -1,11 +1,48 @@
 // frontend/src/features/customers/pages/CustomerDashboard.tsx
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { ArrowUpRight, BriefcaseBusiness, FileText, UsersRound } from "lucide-react";
+import axios from "axios";
+import { jobService } from "../services/jobService";
+import type { ClientJob } from "../types/job";
 
 export const CustomerDashboard: React.FC = () => {
+  const [jobs, setJobs] = useState<ClientJob[]>([]);
+  const [jobsLoading, setJobsLoading] = useState(true);
+  const [jobsError, setJobsError] = useState("");
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadJobs() {
+      try {
+        const clientJobs = await jobService.getMyJobs();
+        if (isMounted) setJobs(clientJobs);
+      } catch (error) {
+        console.error("Customer dashboard jobs load error", error);
+        if (isMounted) {
+          setJobsError(
+            axios.isAxiosError<{ message?: string }>(error)
+              ? error.response?.data?.message || "Unable to load your job activity."
+              : error instanceof Error
+                ? error.message
+                : "Unable to load your job activity."
+          );
+        }
+      } finally {
+        if (isMounted) setJobsLoading(false);
+      }
+    }
+
+    void loadJobs();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const openJobsCount = jobs.filter((job) => job.status === "OPEN").length;
   const stats = [
-    { label: "Open jobs", value: "0", icon: BriefcaseBusiness, highlight: true, note: "Current listings" },
+    { label: "Open jobs", value: jobsLoading ? "..." : String(openJobsCount), icon: BriefcaseBusiness, highlight: true, note: "Current listings" },
     { label: "Proposals received", value: "0", icon: FileText, highlight: false, note: "To review" },
     { label: "Freelancers hired", value: "0", icon: UsersRound, highlight: false, note: "Your team" },
   ];
@@ -64,12 +101,30 @@ export const CustomerDashboard: React.FC = () => {
             </span>
           </div>
           <div className="flex min-h-48 items-center justify-center text-center">
-            <div>
-              <p className="font-mono text-4xl font-black">0</p>
-              <p className="mt-2 text-sm text-gray-500">
-                Job and hiring activity will appear here.
+            {jobsError ? (
+              <p role="alert" className="text-sm font-medium text-red-800">
+                {jobsError}
               </p>
-            </div>
+            ) : jobsLoading ? (
+              <p className="font-mono text-sm font-bold uppercase">Loading job activity...</p>
+            ) : (
+              <div>
+                <p className="font-mono text-4xl font-black">{jobs.length}</p>
+                <p className="mt-2 text-sm text-gray-500">
+                  {jobs.length === 0
+                    ? "Post a job to start finding freelancers."
+                    : `${openJobsCount} open ${openJobsCount === 1 ? "job" : "jobs"} · ${jobs.length} total job ${jobs.length === 1 ? "post" : "posts"}`}
+                </p>
+                {jobs.length > 0 && (
+                  <Link
+                    to="/customer/jobs"
+                    className="mt-4 inline-block text-xs font-bold uppercase underline underline-offset-4"
+                  >
+                    View my job posts
+                  </Link>
+                )}
+              </div>
+            )}
           </div>
         </section>
         <section className="min-h-72 border-2 border-black bg-white p-5 shadow-[4px_4px_0_#111]">
