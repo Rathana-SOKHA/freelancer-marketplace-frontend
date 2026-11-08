@@ -14,6 +14,17 @@ export const jobService = {
     return response.data.data;
   },
 
+  async createCategory(payload: {
+    name: string;
+    description: string | null;
+  }): Promise<JobCategory> {
+    const response = await api.post<JobApiResponse<JobCategory>>(
+      "/jobs/categories",
+      payload
+    );
+    return response.data.data;
+  },
+
   async getMyJobs(): Promise<ClientJob[]> {
     const response = await api.get<JobApiResponse<ClientJob[]>>("/jobs/mine");
     return response.data.data;

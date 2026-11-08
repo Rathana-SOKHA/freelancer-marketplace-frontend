@@ -50,6 +50,12 @@ function PostJobPage() {
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [saving, setSaving] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [categoryName, setCategoryName] = useState("");
+  const [categoryDescription, setCategoryDescription] = useState("");
+  const [creatingCategory, setCreatingCategory] = useState(false);
+  const [categoryFormOpen, setCategoryFormOpen] = useState(false);
+  const [categoryError, setCategoryError] = useState("");
+  const [categorySuccess, setCategorySuccess] = useState("");
 
   useEffect(() => {
     let isMounted = true;
@@ -59,6 +65,7 @@ function PostJobPage() {
         const availableCategories = await jobService.getCategories();
         if (isMounted) {
           setCategories(availableCategories);
+          setCategoryFormOpen(availableCategories.length === 0);
           setForm((current) => ({
             ...current,
             categoryId: current.categoryId || String(availableCategories[0]?.id ?? ""),
@@ -84,6 +91,33 @@ function PostJobPage() {
     const { name, value } = event.target;
     setForm((current) => ({ ...current, [name]: value }));
     setErrorMessage("");
+  }
+
+  async function handleCreateCategory(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setCreatingCategory(true);
+    setCategoryError("");
+    setCategorySuccess("");
+
+    try {
+      const category = await jobService.createCategory({
+        name: categoryName.trim(),
+        description: categoryDescription.trim() || null,
+      });
+      setCategories((current) =>
+        [...current, category].sort((a, b) => a.name.localeCompare(b.name))
+      );
+      setForm((current) => ({ ...current, categoryId: String(category.id) }));
+      setCategoryName("");
+      setCategoryDescription("");
+      setCategoryFormOpen(false);
+      setCategorySuccess(`Category "${category.name}" created and selected.`);
+    } catch (error) {
+      console.error("Job category create error", error);
+      setCategoryError(getErrorMessage(error));
+    } finally {
+      setCreatingCategory(false);
+    }
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -158,9 +192,92 @@ function PostJobPage() {
           role="alert"
           className="border-2 border-amber-700 bg-amber-50 p-4 text-sm text-amber-900"
         >
-          No active job categories are available yet. Please try again later.
+          No job categories are available yet. Create one below to continue posting your job.
         </div>
       )}
+
+      {categorySuccess && (
+        <div
+          role="status"
+          className="border-2 border-green-700 bg-green-50 p-3 text-sm font-medium text-green-800"
+        >
+          {categorySuccess}
+        </div>
+      )}
+
+      <section className="border-2 border-black bg-white p-5 shadow-[4px_4px_0_#111] sm:p-6">
+        <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
+          <div>
+            <h2 className="font-black uppercase">Job category</h2>
+            <p className="mt-1 text-sm text-gray-600">
+              Don’t see a suitable category? Add one here.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => {
+              setCategoryFormOpen((isOpen) => !isOpen);
+              setCategoryError("");
+            }}
+            className="border-2 border-black bg-[#ffe96a] px-4 py-2 text-xs font-bold uppercase transition hover:bg-black hover:text-white"
+          >
+            {categoryFormOpen ? "Cancel" : "Create category"}
+          </button>
+        </div>
+
+        {categoryFormOpen && (
+          <form
+            onSubmit={handleCreateCategory}
+            className="mt-5 space-y-4 border-t-2 border-dashed border-black pt-5"
+          >
+            {categoryError && (
+              <div
+                role="alert"
+                className="border-2 border-red-700 bg-red-50 p-3 text-sm font-medium text-red-800"
+              >
+                {categoryError}
+              </div>
+            )}
+            <div>
+              <label htmlFor="new-category-name" className={labelClassName}>
+                Category name
+              </label>
+              <input
+                id="new-category-name"
+                value={categoryName}
+                onChange={(event) => {
+                  setCategoryName(event.target.value);
+                  setCategoryError("");
+                }}
+                maxLength={100}
+                required
+                placeholder="e.g. Mobile app development"
+                className={inputClassName}
+              />
+            </div>
+            <div>
+              <label htmlFor="new-category-description" className={labelClassName}>
+                Description <span className="font-normal normal-case">(optional)</span>
+              </label>
+              <textarea
+                id="new-category-description"
+                value={categoryDescription}
+                onChange={(event) => setCategoryDescription(event.target.value)}
+                rows={3}
+                placeholder="Describe the type of jobs in this category."
+                className={inputClassName}
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={creatingCategory}
+              className="border-2 border-black bg-black px-4 py-2.5 text-xs font-bold uppercase text-white transition hover:bg-[#ffe96a] hover:text-black disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {creatingCategory ? "Creating..." : "Create and use category"}
+            </button>
+          </form>
+        )}
+      </section>
 
       <form
         onSubmit={handleSubmit}
