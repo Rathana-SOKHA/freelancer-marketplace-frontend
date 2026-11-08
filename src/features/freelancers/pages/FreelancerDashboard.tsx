@@ -1,5 +1,6 @@
 // frontend/src/features/freelancers/pages/FreelancerDashboard.tsx
 import React from "react";
+import { Link } from "react-router";
 import { ArrowUpRight, BriefcaseBusiness, CircleDollarSign, FileText } from "lucide-react";
 
 export const FreelancerDashboard: React.FC = () => {
@@ -78,9 +79,12 @@ export const FreelancerDashboard: React.FC = () => {
           <p className="mt-5 text-sm leading-6 text-gray-600">
             Browse open jobs and send a proposal to start building your project history.
           </p>
-          <div className="mt-5 border-2 border-dashed border-gray-300 p-4 font-mono text-xs uppercase text-gray-500">
-            Your next opportunity starts with a proposal.
-          </div>
+          <Link
+            to="/freelancer/jobs"
+            className="mt-5 inline-flex w-full items-center justify-center border-2 border-black bg-[#ffe96a] px-4 py-3 text-sm font-bold uppercase text-black transition hover:bg-black hover:text-white"
+          >
+            Browse open jobs
+          </Link>
         </section>
       </div>
     </div>

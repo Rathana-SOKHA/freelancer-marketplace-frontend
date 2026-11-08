@@ -7,6 +7,7 @@ import ClientProfilePage from "../customers/pages/ClientProfilePage";
 import CustomerDashboard from "../customers/pages/CustomerDashboard";
 import CustomerJobsPage from "../customers/pages/CustomerJobsPage";
 import PostJobPage from "../customers/pages/PostJobPage";
+import BrowseJobsPage from "../freelancers/pages/BrowseJobsPage";
 import FreelancerDashboard from "../freelancers/pages/FreelancerDashboard";
 import FreelancerProfilePage from "../freelancers/pages/FreelancerProfilePage";
 
@@ -34,6 +35,7 @@ export const FreelancerRoutes = (
   <Route path="/freelancer" element={<AppLayout role="FREELANCER" />}>
     <Route index element={<Navigate to="dashboard" />} />
     <Route path="dashboard" element={<FreelancerDashboard />} />
+    <Route path="jobs" element={<BrowseJobsPage />} />
     <Route path="profile" element={<FreelancerProfilePage />} />
   </Route>
 );
