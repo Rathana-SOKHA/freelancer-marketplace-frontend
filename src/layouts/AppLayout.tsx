@@ -99,6 +99,14 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ role }) => {
           ) : (
             <>
               <NavLink
+                to={dashboardPath}
+                end
+                className={linkClassName}
+                onClick={() => setSidebarOpen(false)}
+              >
+                Dashboard
+              </NavLink>
+              <NavLink
                 to="/customer/dashboard"
                 end
                 className={linkClassName}
