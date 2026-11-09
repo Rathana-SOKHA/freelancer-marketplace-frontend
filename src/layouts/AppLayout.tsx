@@ -74,6 +74,14 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ role }) => {
           {isFreelancer ? (
             <>
               <NavLink
+                to={dashboardPath}
+                end
+                className={linkClassName}
+                onClick={() => setSidebarOpen(false)}
+              >
+                Dashboard
+              </NavLink>
+              <NavLink
                 to="/freelancer/jobs"
                 className={linkClassName}
                 onClick={() => setSidebarOpen(false)}
