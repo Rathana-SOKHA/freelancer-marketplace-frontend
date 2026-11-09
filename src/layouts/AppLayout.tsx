@@ -106,13 +106,13 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ role }) => {
               >
                 Dashboard
               </NavLink>
-              <Link
-                to="/customer/dashboard"
-                className="block border-2 border-transparent px-3 py-2.5 text-sm font-bold uppercase tracking-wide text-gray-800 transition hover:border-black hover:bg-white"
+              <NavLink
+                to="/customer/freelancers"
+                className={linkClassName}
                 onClick={() => setSidebarOpen(false)}
               >
                 Find Freelancers
-              </Link>
+              </NavLink>
               <NavLink
                 to="/customer/jobs"
                 className={linkClassName}
